@@ -1,0 +1,42 @@
+/* 
+ * TC101
+ * 
+ * Name: Moahmed Saleh
+ * ID: 1111113245
+ * Email: mohamed.saleh16@gmail.com
+ * 
+ * Name: Tayyebeh Azadzamani
+ * ID: 1101109095
+ * Email: Azadzamani@gmail.com 
+ * 
+ */
+ 
+ 
+ 
+##To compile all the files:
+
+	1- $cd /home/report
+	
+	2- $make
+	
+	
+##To run the files	
+	1-  $mpirun -np 1 serial
+
+		$mpirun -np 2 dual
+	 
+	 
+	2- to run on cluster
+		
+		
+		a) copy the compiled "clust" file to all the salve machines
+			$scp clust tsn3151@10.106.47.XXX
+			
+		a) use $ifconfig to get the IP address from each node in the cluster.
+		
+		b) add the IP address to hostfile
+		
+		c) run the program on the cluster
+		
+		$mpirun --hostfile hostfile -np 4 clust 
+	

@@ -1,0 +1,24 @@
+/* 
+ * TC101
+ * 
+ * Name: Moahmed Saleh
+ * ID: 1111113245
+ * Email: mohamed.saleh16@gmail.com
+ * 
+ * 
+ */
+ 
+ 
+ 
+##To compile all the files:
+
+	1- $cd /home/report
+	
+	2- $make
+	
+	
+##To run the files	
+	1-  $./prime-openmp2
+	2-  $./prime-pthread4
+	
+

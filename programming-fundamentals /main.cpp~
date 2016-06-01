@@ -1,0 +1,342 @@
+/********************************************
+Course : TCP1101 Programming Fundamentals
+Session: Trimester 1, 2012/13
+Name: Mohamed Saleh Abbashar Abdelgadir
+ID : 1111113245
+Lecture Section : TC10x
+Tutorial Section: TC203
+Project: Part 1
+Email: mohamed.saleh16@gmail.com
+Phone: 0163698424
+********************************************/
+
+//this program is a game which is similar to "triple town" game
+//but here we use characters instead of objects
+
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <climits>
+#include <ctype.h>
+#include <string>
+
+
+using namespace std;
+
+void Menu();//show the menu before starting the game
+void Display();//show the board of the game
+void InputChecking();//check whether the input row num, column num and the character "which is give by using rand()" is right
+void SquanceChecking();//change from "A" to "B" whenever there are three "A's" together.... and so on
+void About();//show some stuff about (is called to Menu())
+void Reset();//clear the board
+
+//clear the board
+void Reset(char sq[5][5])
+{
+    for(int i=0; i<5; ++i)             
+	{
+		for(int j=0; j<5; ++j)
+		{
+			sq[i][j] = ' ' ;
+		}	
+	}
+}
+//this function is to display the board of the game
+void Display(char sq[5][5])
+{
+	cout <<endl;
+	cout <<"	.........................................\n";
+	for(int i=0 ; i<=4; ++i)
+	{
+		for(int j=0 ; j<=4; ++j)
+		{
+			cout <<"	:   " << sq[i][j]  ;		
+		}
+		
+		cout <<"	:\n";
+		cout <<"	.........................................\n";
+	}
+}
+
+//this function are actually doing three jobs 
+// 1)generate a random character 
+// 2)get from user number of row,column and get the character which 
+//is suppose to be the same as that given by random function
+// 3)check whether the input is right or wrong
+void InputChecking(char sq[5][5])
+{
+	int r,c; //(r) for rows (c) for columns
+	char m;
+	int max =300; // the max. number to ignore
+	time_t t; //
+	time (&t);
+	srand(t);
+	
+	m =(rand() % 4) + 'A';//random function which is generat the four characters by add 'A' to one of the numbers "1-4" in ASCII
+
+	cout <<"this is a random object {"<<m ;
+	cout <<"} to put inside one the squares  "<< endl;	
+	cout << "Enter row number: " ;
+	cin >> r;
+	//check if the input is integar or not and if it integer
+	//make sure its not bigger then 5 or less than 1 
+	while(cin.fail() || r < 1 || r > 5)
+	{
+    	cin.clear();
+        cin.ignore(max,'\n');
+        cout << "You Must Enter numbers From '1 to 5':  ";
+        cin >> r;        
+    }
+    r--; //when the input is 1, this will make it 0 to access 
+			//sq[0][c]
+	cout << "Enter column number: " ;
+	cin >> c;//the same as r
+	while(cin.fail() || c < 1 || c > 5)
+	{
+    	cin.clear();
+        cin.ignore(max,'\n');
+        cout << "You Must Enter numbers From '1 to 5' :  ";
+        cin >> c; 
+		          
+    }
+    c--;  
+	cout << "Enter the Charactar that appears for you... To quit press 'Q'  : " ;
+	cin >> sq[r][c] ;
+
+	//check if the character one of the mentioned "a,b,c,d" 
+	//upper or lower case
+	while(sq[r][c] != 'a' && sq[r][c] != 'A'&&sq[r][c] != 'b' && sq[r][c] != 'B' &&sq[r][c] !='c' &&sq[r][c] != 'C'&& sq[r][c] != 'd'&& sq[r][c] != 'D')
+		{
+			if(sq[r][c] == 'q' || sq[r][c] == 'Q' )
+				exit(1);
+			
+			cin.clear();
+			cin.ignore(SCHAR_MAX,'\n');
+			cout << "wrong input... : ";
+			cin >> sq[r][c];        
+		}	
+}
+
+//change from "A" to "B" whenever there are three "A's" together.... and so on
+void SquanceChecking(char sq[5][5])
+{	
+	for(int i=0; i<5; ++i)
+	{
+		for(int j=0; j<5; ++j)
+		{
+			sq[i][j]=toupper(sq[i][j]);
+			while(sq[i][j]=='A' && sq[i][j+1]=='A'&& sq[i][j+2]=='A')
+			{
+				sq[i][j+2] = 'B';
+				sq[i][j+1] = ' ';
+				sq[i][j] = ' ';	
+			}
+			while(sq[i][j]=='A' && sq[i][j-1]=='A'&& sq[i][j-2]=='A')
+			{
+				sq[i][j-2] = 'B';
+				sq[i][j-1] = ' ';
+				sq[i][j] = ' ';				
+			}
+			while(sq[i][j]=='A' && sq[i+1][j]=='A'&& sq[i+2][j]=='A')
+			{
+				sq[i+2][j] = 'A';
+				sq[i+1][j] = ' ';
+				sq[i][j] = ' ';	
+			}
+			while(sq[i][j]=='A' && sq[i-1][j]=='A'&& sq[i-2][j]=='A')
+			{
+				sq[i-2][j] = 'B';
+				sq[i-1][j] = ' ';
+				sq[i][j] = ' ';				
+			}
+			while(sq[i][j]=='A' && sq[i][j+1]=='A'&& sq[i+1][j]=='A')
+			{
+				sq[i+1][j] = 'B';
+				sq[i][j+1] = ' ';
+				sq[i][j] = ' ';	
+			}
+			while(sq[i][j]=='A' && sq[i][j-1]=='A' &&sq[i-1][j]=='A')
+			{
+				sq[i-1][j] = 'B';
+				sq[i][j-1] = ' ';
+				sq[i][j] = ' ';				
+			}
+			while(sq[i][j]=='B' && sq[i][j+1]=='B'&& sq[i][j+2]=='B')
+			{
+				sq[i][j+2] = 'C';
+				sq[i][j+1] = ' ';
+				sq[i][j] = ' ';	
+			}
+			while(sq[i][j]=='B' && sq[i][j-1]=='B' &&sq[i][j-2]=='B')
+			{
+				sq[i][j-2] = 'C';
+				sq[i][j-1] = ' ';
+				sq[i][j] = ' ';				
+			}
+			while(sq[i][j]=='B' && sq[i+1][j]=='B'&& sq[i+2][j]=='B')
+			{
+				sq[i+2][j] = 'C';
+				sq[i+1][j] = ' ';
+				sq[i][j] = ' ';	
+			}
+			while(sq[i][j]=='B' && sq[i-1][j]=='B'&& sq[i-2][j]=='B')
+			{
+				sq[i-2][j] = 'C';
+				sq[i-1][j] = ' ';
+				sq[i][j] = ' ';				
+			}
+			while(sq[i][j]=='B' && sq[i][j+1]=='B'&& sq[i+1][j]=='B')
+			{
+				sq[i+1][j] = 'C';
+				sq[i][j+1] = ' ';
+				sq[i][j] = ' ';	
+			}
+			while(sq[i][j]=='B' && sq[i][j-1]=='B'&& sq[i-1][j]=='B')
+			{
+				sq[i-1][j] = 'C';
+				sq[i][j-1] = ' ';
+				sq[i][j] = ' ';				
+			}
+			while(sq[i][j]=='C' && sq[i][j+1]=='C'&& sq[i][j+2]=='C')
+			{
+				sq[i][j+2] = 'D';
+				sq[i][j+1] = ' ';
+				sq[i][j] = ' ';	
+			}
+			while(sq[i][j]=='C' && sq[i][j-1]=='C' &&sq[i][j-2]=='C')
+			{
+				sq[i][j-2] = 'D';
+				sq[i][j-1] = ' ';
+				sq[i][j] = ' ';				
+			}
+			while(sq[i][j]=='C'&& sq[i+1][j]=='C'&& sq[i+2][j]=='C')
+			{
+				sq[i+2][j] = 'D';
+				sq[i+1][j] = ' ';
+				sq[i][j] = ' ';	
+			}
+			while(sq[i][j]=='C' && sq[i-1][j]=='C'&& sq[i-2][j]=='C')
+			{
+				sq[i-2][j] = 'D';
+				sq[i-1][j] = ' ';
+				sq[i][j] = ' ';				
+			}
+			while(sq[i][j]=='C' && sq[i][j+1]=='C'&& sq[i+1][j]=='C')
+			{
+				sq[i+1][j] = 'D';
+				sq[i][j+1] = ' ';
+				sq[i][j] = ' ';	
+			}
+			while(sq[i][j]=='C' && sq[i][j-1]=='C'&& sq[i-1][j]=='C')
+			{
+				sq[i-1][j] = 'D';
+				sq[i][j-1] = ' ';
+				sq[i][j] = ' ';				
+			}
+			while(sq[i][j]=='D' && sq[i][j+1]=='D'&& sq[i][j+2]=='D')
+			{
+				sq[i][j+2] = 'E';
+				sq[i][j+1] = ' ';
+				sq[i][j] = ' ';	
+			}
+			while(sq[i][j]=='D' && sq[i][j-1]=='D' &&sq[i][j-2]=='D')
+			{
+				sq[i][j-2] = 'E';
+				sq[i][j-1] = ' ';
+				sq[i][j] = ' ';				
+			}
+			while(sq[i][j]=='D' && sq[i+1][j]=='D'&& sq[i+2][j]=='D')
+			{
+				sq[i+2][j] = 'E';
+				sq[i+1][j] = ' ';
+				sq[i][j] = ' ';	
+			}
+			while(sq[i][j]=='D' && sq[i-1][j]=='D'&& sq[i-2][j]=='D')
+			{
+				sq[i-2][j] = 'E';
+				sq[i-1][j] = ' ';
+				sq[i][j] = ' ';				
+			}
+			while(sq[i][j]=='D' && sq[i][j+1]=='D'&& sq[i+1][j]=='D')
+			{
+				sq[i+1][j] = 'E';
+				sq[i][j+1] = ' ';
+				sq[i][j] = ' ';	
+			}
+			while(sq[i][j]=='D' && sq[i][j-1]=='D' &&sq[i-1][j]=='D')
+			{
+				sq[i-1][j] = 'E';
+				sq[i][j-1] = ' ';
+				sq[i][j] = ' ';				
+			}
+		}
+	}
+}
+
+//show the menu before starting the game
+void Menu()
+{
+	int option;
+	cout <<"		*------------------------------*"<<endl;
+	cout <<"		|                              |"<<endl;
+	cout <<"		|    Triple Character Game     |"<<endl;
+	cout <<"		|                              |"<<endl;
+	cout <<"		*------------------------------*"<<endl;
+	cout <<"		|         : Main Menu :        |"<<endl;
+	cout <<"		*------------------------------*"<<endl;
+	cout <<"		|                              |"<<endl;
+	cout <<"		|    1. About Game & Start     |"<<endl;
+	cout <<"		|    2. Exit                   |"<<endl;
+	cout <<"		|                              |"<<endl;
+	cout <<"		*------------------------------*"<<endl;
+	
+	cout <<"		Enter the number of your option <1 or 2>: " ;
+	cin >> option;
+
+		if(option == 1) 
+			About();
+			system("pause");
+			system("cls");
+		if(option == 2)
+			exit(1);
+}
+
+//clear the board
+void About()
+{
+	string town,character, how;
+	cout << endl<<endl;
+	town = "About the original game which is 'Triple Town'. Triple Town is an original      puzzle game in which you try to grow the greatest possible city. The larger the city you build, the more points you score. You build your city by matching three or more game-pieces: combine three grasses to  make a flower, three flowers to make a bush, three bushes to make a tree... until you've filled the board with  houses, cathedrals and castles. Along the way, you'll have to outwit giant bears who will try to block your progress.";
+
+	character ="Triple Character on the other hand has the same concept, but instead of try to  build a big town we try to get as much 'D' and 'E' as we can. ";
+
+	how = "The board of this game is consist of 5x5 columns and rows. The computer will    choose a character for you [A,B,C,D] so, you can add them to the board. You     should add a row number then a column number to  choose the square that you want to add a charater to. ";	
+
+	cout <<town << endl<<endl;
+	cout <<character << endl<<endl;
+	cout <<how << endl;	
+	system("pause");
+	system("cls");
+}
+
+int main()
+{
+	system("color 3E");
+	char sq[5][5];
+	char m;
+	int r,c;
+
+	Menu();
+	Reset(sq);
+   do 
+    {
+		Display(sq);
+    	cout <<endl <<endl;
+		InputChecking(sq);
+		SquanceChecking(sq);
+        Display(sq);	
+		system("cls");
+	}while(true);
+	return 0;
+}
+

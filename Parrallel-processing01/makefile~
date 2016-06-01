@@ -1,0 +1,11 @@
+EXECS=serial 
+MPICC?=mpicc -lm
+
+all: ${EXECS}
+
+serial: serial.c
+	${MPICC} -o serial parameters.h serial.c
+
+
+clean:
+	rm ${EXECS}
