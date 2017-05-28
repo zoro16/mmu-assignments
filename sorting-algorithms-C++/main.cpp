@@ -1,6 +1,6 @@
 /* 
  * File:   main.cpp
- * Author: Mohamed Saleh        1111113245              TC208
+ * Author: Mohamed Saleh
  *
  * Created on December 22, 2013, 10:10 PM
  */
